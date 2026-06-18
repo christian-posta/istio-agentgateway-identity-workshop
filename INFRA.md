@@ -43,6 +43,15 @@ export CLUSTER2=kind-cluster2
 ./parts/runall.sh                    # ~3–4 min — runs Parts 1-5 and asserts each
 ```
 
+**Re-validate without rebuilding infra** (faster, ~1 min for the wipe + ~1 min for runall):
+```bash
+./reset-workshop.sh                  # delete the 6 workshop namespaces on both clusters
+                                     # (keeps Istio, EAG, multicluster peering intact)
+./parts/runall.sh                    # rebuild and re-validate everything
+```
+Use this when you've completed `setup.sh` once and want to re-run the workshop content
+without paying the ~5–7 min cost of recreating kind clusters and reinstalling Istio.
+
 **Run an individual part:**
 ```bash
 ./parts/01-multicluster.sh
@@ -52,7 +61,7 @@ export CLUSTER2=kind-cluster2
 ./parts/05-obo-token-exchange.sh
 ```
 Each script is idempotent (re-running is safe) but builds on the previous part's state.
-Run them in order on a fresh `setup.sh`.
+Run them in order on a fresh `setup.sh` (or after `reset-workshop.sh`).
 
 **Manual walk-through** (no scripts): follow `README.md` after exporting `CLUSTER1` /
 `CLUSTER2`. The READMEs commands and the part scripts apply the same resources.
